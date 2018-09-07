@@ -20,10 +20,6 @@ class Enc(FlaskForm):
     key = StringField('Key : ', validators=[DataRequired()])
     secondKey = IntegerField('Second Key:', validators=[DataRequired()])
 
-@app.route("/")
-def index():
-    return "Hello world"
-
 
 @app.route("/home/encrypt", methods=['GET','POST'])
 def encrypt():
@@ -112,56 +108,16 @@ def encrypt():
                 else:
                     ky.append(key[i])
 
-        for i in range(len(key2)):
-            if i % 2 == 0:
-                if 65 <= ord(key2[i]) <= 90:
-                    ky2.append(chr((ord(key2[i]) + 14) % 65 % 26 + 65))
-                elif 97 <= ord(key2[i]) <= 122:
-                    ky2.append(chr((ord(key2[i]) + 14) % 97 % 26 + 97))
-                elif 48 <= ord(key2[i]) <= 57:
-                    ky2.append(chr((ord(key2[i]) + 14) % 48 % 10 + 48))
-                else:
-                    ky2.append(key2[i])
-                # ky2.append(chr((ord(plaintext[i]) + 13) % 65 % 26 + 65))
-            elif i % 5 == 0:
-                if 65 <= ord(key2[i]) <= 90:
-                    ky2.append(chr((ord(key2[i]) + 17) % 65 % 26 + 65))
-                elif 97 <= ord(key2[i]) <= 122:
-                    ky2.append(chr((ord(key2[i]) + 17) % 97 % 26 + 97))
-                elif 48 <= ord(key2[i]) <= 57:
-                    ky2.append(chr((ord(key2[i]) + 17) % 48 % 10 + 48))
-                else:
-                    ky2.append(key2[i])
-            elif i % 3 == 0:
-                if 65 <= ord(key2[i]) <= 90:
-                    ky2.append(chr((ord(key2[i]) + 24) % 65 % 26 + 65))
-                elif 97 <= ord(key2[i]) <= 122:
-                    ky2.append(chr((ord(key2[i]) + 24) % 97 % 26 + 97))
-                elif 48 <= ord(key2[i]) <= 57:
-                    ky2.append(chr((ord(key2[i]) + 24) % 48 % 7 + 48))
-                else:
-                    ky2.append(key2[i])
-            else:
-                if 65 <= ord(key2[i]) <= 90:
-                    ky2.append(chr((ord(key2[i]) + 13) % 65 % 26 + 65))
-                elif 97 <= ord(key2[i]) <= 122:
-                    ky2.append(chr((ord(key2[i]) + 13) % 97 % 26 + 97))
-                elif 48 <= ord(key2[i]) <= 57:
-                    ky2.append(chr((ord(key2[i]) + 13) % 48 % 10 + 48))
-                else:
-                    ky2.append(key2[i])
         chiper_mentah = ''.join(test)
         kunci1_mentah = ''.join(ky)
-        kunci2_mentah = ''.join(ky2)
-        for i in range(len(chiper_mentah)):
-            pass
-    return render_template('encrypt.html', form=form)
+        kunci2_mentah = ky2
+        final = CustomEnc(chiper_mentah,kunci1_mentah,kunci2_mentah)
+    return render_template('encrypt.html', form=form, data = final)
 
-def vinegereEnc(plaintext,chiper1,chiper2):
+def CustomEnc(plaintext,chiper1,chiper2):
     alphabesar = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
     alphakecil = "abcdefghijklmnopqrstuvwxyz"
     angka = "1234567890"
-    c = ""
     chipertext =[]
     kunci1 = []
     kunci2 = []
@@ -175,25 +131,48 @@ def vinegereEnc(plaintext,chiper1,chiper2):
         else:
             chipertext.append(plaintext[p])
     for k in range(len(chiper1)):
-        if 65 <= ord(chiper1[p]) <= 90:
-            kunci1.append(alphabesar.find(chiper1[p]))
-        elif 97 <= ord(chiper1[p]) <= 122:
-            kunci1.append(alphakecil.find(chiper1[p]))
-        elif 48 <= ord(chiper1[p]) <= 57:
-            kunci1.append(angka.find(chiper1[p]))
+        if 65 <= ord(chiper1[k]) <= 90:
+            kunci1.append(alphabesar.find(chiper1[k]))
+        elif 97 <= ord(chiper1[k]) <= 122:
+            kunci1.append(alphakecil.find(chiper1[k]))
+        elif 48 <= ord(chiper1[k]) <= 57:
+            kunci1.append(angka.find(chiper1[k]))
         else:
-            kunci1.append(chiper1[p])
-    for k in range(len(chiper2)):
-        if 65 <= ord(chiper2[p]) <= 90:
-            kunci2.append(alphabesar.find(chiper2[p]))
-        elif 97 <= ord(chiper2[p]) <= 122:
-            kunci2.append(alphakecil.find(chiper2[p]))
-        elif 48 <= ord(chiper2[p]) <= 57:
-            kunci2.append(angka.find(chiper2[p]))
-        else:
-            kunci2.append(chiper[p])
-    
+            kunci1.append(chiper1[k])
+    # for k in range(len(chiper2)):
+    #     if 65 <= ord(chiper2[k]) <= 90:
+    #         kunci2.append(alphabesar.find(chiper2[k]))
+    #     elif 97 <= ord(chiper2[k]) <= 122:
+    #         kunci2.append(alphakecil.find(chiper2[k]))
+    #     elif 48 <= ord(chiper2[k]) <= 57:
+    #         kunci2.append(angka.find(chiper2[k]))
+    #     else:
+    #         kunci2.append(chiper[k])
+    final = []
+    if len(plaintext) == len(chiper2):
+        for l in range(len(plaintext)):
+            if 65 <= ord(plaintext[p]) <= 90:
+                final.append(chr(plaintext[i] + chiper2 + (ord(chiper1[l])%65) % 26 + 65))
 
+                # es = alphabesar.find(plaintext[i] +  ))
+                # chipertext.append(alphabesar.find(plaintext[p]))
+            elif 97 <= ord(plaintext[p]) <= 122:
+                final.append(chr(plaintext[i] + chiper2 + (ord(chiper1[l])%97)  % 26 + 97))
+                # chipertext.append(alphakecil.find(plaintext[p]))
+            elif 48 <= ord(plaintext[p]) <= 57:
+                final.append(chr(plaintext[i] + chiper2 + (ord(chiper1[l])%48)  % 10 + 48 ))
+                # chipertext.append(angka.find(plaintext[p]))
+            else:
+                final.append(chr(plaintext[i] + chiper2 + (ord(chiper1[l]))))
+                # chipertext.append(plaintext[p])
+    else:
+        pass
+
+    return ''.join(final)
+
+@app.route("/home/hint")
+def Hint():
+    return render_template('hint.html')
 
 @app.route("/home/decrypt", methods=['GET','POST'])
 def decrypt():
