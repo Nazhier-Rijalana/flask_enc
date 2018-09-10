@@ -15,7 +15,7 @@ class Enc(FlaskForm):
     key = StringField('Key : ', validators=[DataRequired()])
     secondKey = IntegerField('Second Key:', validators=[DataRequired()])
 
-class Enc(FlaskForm):
+class Dec(FlaskForm):
     ChiperText = StringField('ChiperText', validators=[DataRequired()])
     key = StringField('Key : ', validators=[DataRequired()])
     secondKey = IntegerField('Second Key:', validators=[DataRequired()])
@@ -149,24 +149,33 @@ def CustomEnc(plaintext,chiper1,chiper2):
     #     else:
     #         kunci2.append(chiper[k])
     final = []
-    if len(plaintext) == len(chiper2):
+    if len(plaintext) == len(chiper1):
         for l in range(len(plaintext)):
             if 65 <= ord(plaintext[p]) <= 90:
-                final.append(chr(plaintext[i] + chiper2 + (ord(chiper1[l])%65) % 26 + 65))
+                final.append(chr(ord(plaintext[i]) + chiper2 + (ord(chiper1[l])%65) % 26 + 65))
 
                 # es = alphabesar.find(plaintext[i] +  ))
                 # chipertext.append(alphabesar.find(plaintext[p]))
             elif 97 <= ord(plaintext[p]) <= 122:
-                final.append(chr(plaintext[i] + chiper2 + (ord(chiper1[l])%97)  % 26 + 97))
+                final.append(chr(ord(plaintext[i]) + chiper2 + (ord(chiper1[l])%97)  % 26 + 97))
                 # chipertext.append(alphakecil.find(plaintext[p]))
             elif 48 <= ord(plaintext[p]) <= 57:
-                final.append(chr(plaintext[i] + chiper2 + (ord(chiper1[l])%48)  % 10 + 48 ))
+                final.append(chr(ord(plaintext[i]) + chiper2 + (ord(chiper1[l])%48)  % 10 + 48 ))
                 # chipertext.append(angka.find(plaintext[p]))
             else:
                 final.append(chr(plaintext[i] + chiper2 + (ord(chiper1[l]))))
                 # chipertext.append(plaintext[p])
     else:
-        pass
+        for i n range(len(plaintext)):
+            for j in range(len(chiper1)):
+                if 65 <= ord(plaintext[i]) <= 90:
+                    final.append(chr(ord(plaintext[i]) + chiper2 + (ord(chiper1[j])% 65) %26 + 65))
+                elif 97 <= ord(plaintext[i]) <= 122:
+                    final.append(chr(ord(plaintext[i]) + chiper2 + (ord(chiper1[j])% 97) %26 + 65))
+                elif 48 <= ord(plaintext[i]) <= 57:
+                    final.append(chr(ord(plaintext[i]) + chiper2 + (ord(chiper[j])% 48) %26 + 10))
+                else:
+                    final.append(chr(ord(plaintext[i])+ chiper2 ))
 
     return ''.join(final)
 
@@ -176,8 +185,15 @@ def Hint():
 
 @app.route("/home/decrypt", methods=['GET','POST'])
 def decrypt():
-    pass
+    form = Dec()
+    if request.method == "POST":
+        pass        
+    return render_template('decrypt.html')
 
+def DecCustomEnc(chipertext,key1,key2):
+    final = []
+    return ''.join(final)
+    
 
 
 if __name__ == "__main__":
