@@ -1,9 +1,10 @@
-from flask import Flask, redirect, url_for, render_template, request, flash, request
+from flask import Flask, redirect, url_for, render_template, request, flash, request, make_response
 from flask_wtf import FlaskForm
 from wtforms import StringField, IntegerField
 import random
 from flask_bootstrap import Bootstrap
 from wtforms.validators import DataRequired, Email, Length
+import json
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'Nani Koreeee???'
@@ -31,6 +32,7 @@ def encrypt():
     test = []
     ky = []
     ky2 = []
+    response = ""
     if request.method == "POST":
         plaintext = form.PlainText.data
         kunci = form.key.data
@@ -116,7 +118,9 @@ def encrypt():
         kunci1_mentah = ''.join(ky)
         kunci2_mentah = ky2
         final = CustomEnc(chiper_mentah,kunci1_mentah,kunci2_mentah)
-    return final
+        response = make_response(final)
+        response.content_type = 'application/json'
+    return response
 
 def CustomEnc(plaintext,chiper1,chiper2):
     alphabesar = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -193,7 +197,7 @@ def decrypt():
     test = []
     ky = []
     ky2 = []
-    hasil =""
+    response = ""
     if request.method == "POST":
         chipertext = form.ChiperText.data
         key1 = form.key.data
@@ -278,7 +282,10 @@ def decrypt():
         kunci1_mentah = ''.join(ky)
         kunci2_mentah = ky2
         hasil = DecCustomEnc(plain_mentah,kunci1_mentah,kunci2_mentah)
-    return hasil
+        response = make_response(hasil)
+        response.content_type = 'application/json'
+
+    return response
 
 def DecCustomEnc(chiper,key1,key2):
     alphabesar = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
