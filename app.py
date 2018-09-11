@@ -124,7 +124,7 @@ def CustomEnc(plaintext,chiper1,chiper2):
     angka = "1234567890"
     chipertext =[]
     kunci1 = []
-    kunci2 = []
+    kunci2 = chiper2
     for p in range(len(plaintext)):
         if 65 <= ord(plaintext[p]) <= 90:
             chipertext.append(alphabesar.find(plaintext[p]))
@@ -280,22 +280,22 @@ def decrypt():
         hasil = DecCustomEnc(plain_mentah,kunci1_mentah,kunci2_mentah)
     return hasil
 
-def DecCustomEnc(chipertext,key1,key2):
+def DecCustomEnc(chiper,key1,key2):
     alphabesar = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
     alphakecil = "abcdefghijklmnopqrstuvwxyz"
     angka = "1234567890"
     chipertext =[]
     kunci1 = []
-    kunci2 = []
-    for p in range(len(chipertext)):
-        if 65 <= ord(chipertext[p]) <= 90:
-            chipertext.append(alphabesar.find(chipertext[p]))
-        elif 97 <= ord(chipertext[p]) <= 122:
-            chipertext.append(alphakecil.find(chipertext[p]))
-        elif 48 <= ord(chipertext[p]) <= 57:
-            chipertext.append(angka.find(chipertext[p]))
+    kunci2 = key2
+    for p in range(len(chiper)):
+        if 65 <= ord(chiper[p]) <= 90:
+            chipertext.append(alphabesar.find(chiper[p]))
+        elif 97 <= ord(chiper[p]) <= 122:
+            chipertext.append(alphakecil.find(chiper[p]))
+        elif 48 <= ord(chiper[p]) <= 57:
+            chipertext.append(angka.find(chiper[p]))
         else:
-            chipertext.append(chipertext[p])
+            chipertext.append(chiper[p])
     for k in range(len(chiper1)):
         if 65 <= ord(chiper1[k]) <= 90:
             kunci1.append(alphabesar.find(chiper1[k]))
