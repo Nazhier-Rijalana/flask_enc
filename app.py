@@ -189,7 +189,8 @@ def CustomEnc(plaintext,chiper1,chiper2):
 
 @app.route("/home/hint")
 def Hint():
-    return render_template('hint.html')
+    form = Dec()
+    return render_template('hint.html', form=form)
 
 @app.route("/home/decrypt", methods=['GET','POST'])
 def decrypt():
@@ -351,7 +352,6 @@ def DecCustomEnc(chiper,key1,key2):
                     final.append(chr(ord(chipertext[i]) - chiper2 ))
 
     return ''.join(final)
-
 
 
 
