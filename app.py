@@ -22,7 +22,9 @@ class Dec(FlaskForm):
     key = StringField('Key : ', validators=[DataRequired()])
     secondKey = IntegerField('Second Key:', validators=[DataRequired(), NumberRange(min=0,max=11)])
     submit = SubmitField("Submit ")
-
+@app.route("/")
+def index():
+    return redirect(url_for('encrypt'))
 @app.route("/home/encrypt")
 def enc():
     form = Enc()

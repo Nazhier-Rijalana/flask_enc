@@ -6,7 +6,9 @@
     <meta charset="utf-8">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/core.js"></script> -->
     <title>test</title>
   </head>
   <body>
@@ -14,23 +16,46 @@
       {{ form.csrf_token }}
       <div class="form-group">
         {{form.ChiperText.label}}
-        {{ form.ChiperText(class="form-control")}}
+        {{ form.ChiperText(class="form-control" ,id="chipertext", onchange="decrypt()")}}
       </div>
       <div class="form-group">
         {{form.key.label}}
-        {{ form.key(class="form-control")}}
+        {{ form.key(class="form-control", id="key", onchange="decrypt()")}}
       </div>
       <div class="form-group">
         {{form.secondKey.label}}
-        {{ form.secondKey(class="form-control")}}
+        {{ form.secondKey(class="form-control", id="secondKey", onchange="decrypt()" )}}
       </div>
-      {{ form.submit(class="btn btn-success")}}
     </form>
+      <p id="result"></p>
 
-    <div class="jumbotron">
-      Result : <span id="result"></span>
-    </div>
+      <span>Want To CryptAnalys this chiper? see this story :v</span>
+      <a href="{{url_for('Hint')}}" class="btn btn-success"> Hint</a>
+
+      <span>Want To Encrypt?</span>
+      <a href="{{url_for('enc')}}">Encrypt</a>
     <!-- {{ wtf.quick_form(form) }} -->
+    <script>
+      function decrypt()
+      {
+        var chipertext = document.getElementById("chipertext").value;
+        var key = document.getElementById("key").value;
+        var secondKey = document.getElementById("secondKey").value;
+
+        $.ajax({
+          type: 'POST',
+          url: '/home/decrypt/proccess',
+          data:{
+            "ChiperText":chipertext,
+            "key":key,
+            "secondKey":secondKey
+          },
+          success: function(response){
+            alert("Hasil : "+response);
+          }
+        })
+      }
+    </script>
   </body>
 </html>
 {% endblock %}
